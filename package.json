@@ -1,0 +1,15 @@
+{
+  "name": "ai-cmd",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Ibrahim Ahmed <abeahmed2@gmail.com>",
+  "workspaces": ["src/packages/*"],
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "bun-types": "latest"
+  },
+  "dependencies": {
+    "openai": "^4.21.0"
+  }
+}
