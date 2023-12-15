@@ -12,6 +12,7 @@
   "dependencies": {
     "as-table": "^1.0.55",
     "cli-color": "^2.0.3",
+    "cli-spinners": "^2.9.2",
     "commander": "^11.1.0",
     "openai": "^4.21.0"
   }

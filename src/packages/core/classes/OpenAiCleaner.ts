@@ -1,6 +1,5 @@
 import { Cleaner } from "../interfaces/Cleaner";
 import { CleanResult } from "../types/CleanResult";
-import { moveFiles } from "../utils/moveFiles";
 import { OpenAiGpt } from "./OpenAiGpt";
 
 export class OpenAiCleaner implements Cleaner {
@@ -10,10 +9,7 @@ export class OpenAiCleaner implements Cleaner {
     this.openaiGpt = openaiGpt;
   }
 
-  public async clean(opt: {
-    filePaths: string[];
-    dry: boolean;
-  }): Promise<CleanResult> {
+  public async clean(opt: { filePaths: string[] }): Promise<CleanResult> {
     const functionCall = await this.openaiGpt.evalFunctions({
       prompt: `Current directory contents:
 
