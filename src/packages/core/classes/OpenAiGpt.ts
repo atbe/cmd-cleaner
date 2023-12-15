@@ -59,8 +59,6 @@ export class OpenAiGpt implements Gpt {
       stream: false,
     });
 
-    console.log(JSON.stringify(response, null, 2));
-
     const choices = response.choices;
     if (!choices) {
       throw new Error("No choices");
@@ -79,11 +77,11 @@ export class OpenAiGpt implements Gpt {
       }
 
       try {
-        const functionDefinition = JSON.parse(tc.function.arguments);
+        const parameters = JSON.parse(tc.function.arguments);
 
         return {
           name: tool,
-          parameters: functionDefinition.parameters,
+          parameters,
         };
       } catch (e) {
         console.error(`Error parsing function definition: ${e}`);
