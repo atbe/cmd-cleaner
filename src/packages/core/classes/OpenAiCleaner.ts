@@ -4,9 +4,15 @@ import { OpenAiGpt } from "./OpenAiGpt";
 
 export class OpenAiCleaner implements Cleaner {
   private readonly openaiGpt: OpenAiGpt;
+  private readonly model: string =
+    process.env.OPENAI_MODEL || "gpt-3.5-turbo-1106";
 
-  constructor(openaiGpt: OpenAiGpt) {
+  constructor(openaiGpt: OpenAiGpt, model?: string) {
     this.openaiGpt = openaiGpt;
+
+    if (model) {
+      this.model = model;
+    }
   }
 
   public async clean(opt: { filePaths: string[] }): Promise<CleanResult> {
@@ -29,7 +35,7 @@ ${JSON.stringify(opt.filePaths, null, 2)}}`,
         },
       ],
       options: {
-        model: "gpt-3.5-turbo-1106",
+        model: this.model,
         maxTokens: 3_000,
         temperature: 0.5,
         topP: 1,

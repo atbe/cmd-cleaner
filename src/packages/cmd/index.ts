@@ -26,6 +26,7 @@ const getParams = (program: Command) => {
     ? args[1]
     : args[0];
   const maxDepth = options.maxDepth;
+  const model = options.model;
   const dry: boolean = options.dry;
   const verbose: boolean = options.verbose;
 
@@ -34,6 +35,7 @@ const getParams = (program: Command) => {
     maxDepth,
     dry,
     verbose,
+    model,
   };
 };
 
@@ -104,6 +106,9 @@ const printPlan = async (result: CleanResult) => {
 };
 
 const executePlanWithOpenAi = async (pathsToClean: string[]) => {
+  const { model } = getParams(program);
+  console.log("Using model", model);
+
   const configPath = resolve(homedir(), ".order", "config.json");
   const configFile = Bun.file(configPath);
   const config = await configFile.json();
@@ -114,7 +119,7 @@ const executePlanWithOpenAi = async (pathsToClean: string[]) => {
   const openaiGpt = new OpenAiGpt({
     openai: openaiClient,
   });
-  const openaiCleaner: Cleaner = new OpenAiCleaner(openaiGpt);
+  const openaiCleaner: Cleaner = new OpenAiCleaner(openaiGpt, model);
   const result = await openaiCleaner.clean({
     filePaths: pathsToClean,
   });
@@ -161,6 +166,7 @@ program
   .argument("<string>", "Directory to clean")
   .argument("<destination>", "Destination to copy files to")
   .option("-d, --maxDepth <number>", "Maximum depth to clean to", "1")
+  .option("--model <string>", "OpenAI model to use", "gpt-3.5-turbo-1106")
   .option("--dry", "Dry run")
   .option("--verbose", "Verbose output")
   .action(async () => {
@@ -186,7 +192,7 @@ program
     await confirm();
     await copyFilesToNewDir(result, directory, resolve(toCopyToDir));
 
-    console.log("Directory has been cleaned :) 🪄");
+    console.log("\nDirectory has been cleaned :) 🪄");
     process.exit(0);
   });
 
@@ -197,6 +203,7 @@ program
   )
   .argument("<string>", "Directory to clean")
   .option("-d, --maxDepth <number>", "Maximum depth to clean to", "1")
+  .option("--model <string>", "OpenAI model to use", "gpt-3.5-turbo-1106")
   .option("--dry", "Dry run")
   .option("--verbose", "Verbose output")
   .action(async () => {
@@ -252,6 +259,7 @@ program
 program
   .argument("<string>", "Directory to clean")
   .option("-d, --maxDepth <number>", "Maximum depth to clean to", "1")
+  .option("--model <string>", "OpenAI model to use", "gpt-3.5-turbo-1106")
   .option("--dry", "Dry run")
   .option("--verbose", "Verbose output")
   .action(async () => {

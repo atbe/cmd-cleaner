@@ -1,5 +1,5 @@
 {
-  "name": "ai-cmd",
+  "name": "order-folder",
   "version": "1.0.0",
   "main": "index.js",
   "author": "Ibrahim Ahmed <abeahmed2@gmail.com>",
@@ -15,5 +15,8 @@
     "cli-spinners": "^2.9.2",
     "commander": "^11.1.0",
     "openai": "^4.21.0"
+  },
+  "bin": {
+    "order":"./src/packages/cmd/index.ts"
   }
 }
